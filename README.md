@@ -1,6 +1,6 @@
 # Once-Upon-Us
 
-**Once Upon Us** is a private digital memory library for couples to document and relive their journey together. With support for media uploads (photos and videos), personalized voiceovers, and descriptive text entries, the app serves as a secure and intimate space for shared memories. 
+**Once Upon Us** is a private digital memory library for couples to document and relive their journey together. With support for media uploads (photos and videos), personalized voiceovers, and descriptive text entries, the app serves as a secure and intimate space for shared memories.
 Built with React, Tailwind CSS, and Firebase.
 
 ## Features
@@ -15,34 +15,34 @@ Built with React, Tailwind CSS, and Firebase.
 
 - **Frontend:** React, Tailwind CSS
 - **Backend & Hosting:** Firebase (Authentication, Firestore, Storage, Hosting)
-- **Optional Enhancements:** 
-  - Speech-to-text or text-to-speech integration
-  - Shareable links or export options
+- **Optional Enhancements:**
+    - Speech-to-text or text-to-speech integration
+    - Shareable links or export options
 
 ## Folder Structure
 
 once-upon-us/ 
-├── public/ 
-├── src/ 
-│ ├── components/ 
-│ ├── pages/ 
-│ ├── utils/ 
-│ ├── App.js 
-│ └── index.js 
-├── .gitignore 
-├── firebase.json 
-├── tailwind.config.js 
-├── package.json 
+├── public/
+├── src/
+│ ├── components/
+│ ├── pages/
+│ ├── utils/
+│ ├── App.js
+│ └── index.js
+├── .gitignore
+├── firebase.json
+├── tailwind.config.js
+├── package.json
 └── README.md
 
 
 ## Setup Instructions
 
 1. **Clone the repository**
-git clone <project-link>
+   git clone <project-link>
 
 2. **Install dependencies**
-npm install
+   npm install
 
 
 3. **Firebase Setup**
@@ -60,7 +60,7 @@ npm install
   ```
 
 4. **Start the development server**
-npm start
+   npm start
 
 ## License
 
