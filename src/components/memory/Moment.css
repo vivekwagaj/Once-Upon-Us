@@ -1,0 +1,14 @@
+
+
+.date-box-texture {
+  background-image: url('../../../public/parchment-texture.png'); /* optional texture image */
+  background-blend-mode: multiply;
+    background-size: cover;
+    background-position: center;
+    box-shadow:
+      inset 0 0 10px rgba(0, 0, 0, 0.2),
+      4px 4px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+}

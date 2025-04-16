@@ -2,7 +2,7 @@ import Moment from '../components/memory/Moment';
 
 function Memories() {
   const sampleMoment = {
-    date: "August 15th, 2022",
+    date: "2023-11-04",
     text: "The day I graduated from college. It felt like a dream. I’ll never forget the feeling of walking across the stage.",
     imageUrl: "/logo192.png", // Your image path here
 
