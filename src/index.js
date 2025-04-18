@@ -4,13 +4,18 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./components/auth/AuthContext.jsx";
 import "./index.css";
+import { MomentsProvider } from './context/MomentsContext';
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+
     <BrowserRouter>
       <AuthProvider>
+              <MomentsProvider>
+
         <App />
+        </MomentsProvider>
       </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
+
 );

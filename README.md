@@ -14,7 +14,7 @@ Built with React, Tailwind CSS, and Firebase.
 ## Tech Stack
 
 - **Frontend:** React, Tailwind CSS
-- **Backend & Hosting:** Firebase (Authentication, Firestore, Storage, Hosting)
+- **Backend & Hosting:** Firebase (Authentication, Firestore, Hosting)
 - **Optional Enhancements:**
     - Speech-to-text or text-to-speech integration
     - Shareable links or export options

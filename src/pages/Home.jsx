@@ -33,12 +33,29 @@ const Home = () => {
           >
             Add a Moment
           </button>
+
+          <button
+            onClick={() => navigate("/memory-path")}
+            className="bg-green-500 hover:bg-red-600 text-white px-6 py-2 rounded-md"
+            >
+             Our Story
+          </button>
+
           <button
             onClick={handleSignOut}
             className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md"
           >
             Sign Out
           </button>
+
+          <button
+              onClick={() => navigate("/memories/1")}
+              className="bg-green-500 hover:bg-red-600 text-white px-6 py-2 rounded-md"
+              >
+               Sample Moment
+            </button>
+
+
         </div>
       </div>
     </div>

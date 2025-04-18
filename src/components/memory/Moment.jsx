@@ -3,7 +3,7 @@ import './Moment.css';
 import { useNavigate } from "react-router-dom";
 
 
-const Moment = ({ imageUrl, videoUrl, text, date, audioUrl }) => {
+const Moment = ({ imageUrl, videoUrl, text, title, date, audioUrl }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = React.useRef(null);
 
@@ -47,6 +47,13 @@ const Moment = ({ imageUrl, videoUrl, text, date, audioUrl }) => {
 
 
       <div className="relative w-full max-w-3xl p-6  border-[#d2b48c]  overflow-hidden">
+
+      <p
+                        className="text-center text-gray-800 text-3xl leading-relaxed mb-4 whitespace-pre-wrap"
+
+                      >
+                        {title}
+                      </p>
         {/* Media Container with Frame */}
         <div className="relative w-full max-h-[500px] mb-6 border-4 border-[#3e2c1e] rounded-lg shadow-md overflow-hidden">
           {imageUrl && (
@@ -72,6 +79,7 @@ const Moment = ({ imageUrl, videoUrl, text, date, audioUrl }) => {
           </div>
         </div>
 
+
         {/* Moment Text */}
         <p
           className="text-lg text-gray-800 leading-relaxed mb-4 whitespace-pre-wrap italic"
@@ -79,6 +87,8 @@ const Moment = ({ imageUrl, videoUrl, text, date, audioUrl }) => {
         >
           {text}
         </p>
+
+
 
         {/* Optional Voiceover */}
         {audioUrl && (
@@ -100,6 +110,13 @@ const Moment = ({ imageUrl, videoUrl, text, date, audioUrl }) => {
       >
         ← Back
       </button>
+
+      <button
+              onClick={() => navigate("/memory-path")}
+              className="absolute top-6 right-6 px-4 py-2 bg-yellow-700 text-white rounded-lg shadow-md hover:bg-yellow-800 transition"
+            >
+              Memory-Map →
+            </button>
     </div>
   );
 };

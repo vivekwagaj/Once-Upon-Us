@@ -1,22 +1,32 @@
+// Memories.js
+import React from 'react';
 import Moment from '../components/memory/Moment';
+import { useMoments } from '../context/MomentsContext';
+import { useParams } from 'react-router-dom';
 
 function Memories() {
-  const sampleMoment = {
-    date: "2023-11-04",
-    text: "The day I graduated from college. It felt like a dream. I’ll never forget the feeling of walking across the stage.",
-    imageUrl: "/logo192.png", // Your image path here
+  const { id } = useParams();
+  const { moments } = useMoments();
+  const selectedMoment = moments.find(moment => moment.id === parseInt(id));
 
-    audioUrl: "/audio/graduation-voiceover.mp3", // Your audio path (optional)
-  };
+  if (!selectedMoment) {
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Moment not found.
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
+    <div className="p-6 flex justify-center">
+    console.log(selectedMoment);
       <Moment
-        date={sampleMoment.date}
-        text={sampleMoment.text}
-        imageUrl={sampleMoment.imageUrl}
-        videoUrl={sampleMoment.videoUrl}
-        audioUrl={sampleMoment.audioUrl}
+        title={selectedMoment.title}
+        date={selectedMoment.date}
+        text={selectedMoment.text}
+        imageUrl={selectedMoment.media}
+        audioUrl={selectedMoment.voiceover}
+        videoUrl={selectedMoment.videoUrl}
       />
     </div>
   );

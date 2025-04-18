@@ -3,6 +3,8 @@ import { db } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../config/uploadToCloudinary"; // Import the new utility
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase/firebaseConfig";
+import { useMoments } from '../context/MomentsContext';
 
 
 const moodOptions = [
@@ -14,8 +16,11 @@ const moodOptions = [
   { emoji: "🧘‍♀️", label: "Calm" },
 ];
 
+
+
 const CreateMomentForm = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [title,setTitle] = useState("");
   const [text, setText] = useState("");
   const [mood, setMood] = useState(null);
   const [media, setMedia] = useState({ type: null, file: null, url: null });
@@ -64,19 +69,33 @@ const CreateMomentForm = () => {
     });
   };
 
+  const { fetchUserMoments } = useMoments();
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+
+      const auth1 = auth;
+      const user = auth1.currentUser;
+
+      if (!user) {
+        alert("You need to be logged in to create a moment.");
+        return;
+      }
+
       // Upload media and audio to Cloudinary if they exist
       const mediaUrl = media.file ? await uploadToCloudinary(media.file) : null;
       const audioUrl = audio.file ? await uploadToCloudinary(audio.file) : null;
 
       // Save the data to Firestore
       await addDoc(collection(db, "moments"), {
+        userId: user.uid,
         date,
         text,
+        title,
         mood,
         media: mediaUrl
           ? {
@@ -97,6 +116,8 @@ const CreateMomentForm = () => {
         createdAt: serverTimestamp(),
       });
 
+      await fetchUserMoments();
+
       // Show toast and reset form
       setShowToast(true);
       setText("");
@@ -112,6 +133,7 @@ const CreateMomentForm = () => {
 
     setIsSubmitting(false);
   };
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-[#fdf6e3] border border-gray-300 rounded-lg shadow-md font-serif">
@@ -151,6 +173,15 @@ const CreateMomentForm = () => {
         ))}
       </div>
 
+      <label className="block mb-2">Memory Title</label>
+       <textarea
+         rows={1}
+         className="w-full p-2 border border-gray-300 rounded mb-4"
+         placeholder="Write about this moment..."
+         value={title}
+         onChange={(e) => setTitle(e.target.value)}
+      />
+
       {/* Text */}
       <label className="block mb-2">Memory Text</label>
       <textarea
@@ -180,11 +211,12 @@ const CreateMomentForm = () => {
       />
 
       {/* Live Preview */}
-      {(media.url || audio.url || mood || text) && (
+      {(title || media.url || audio.url || mood || text) && (
         <div className="bg-white border border-gray-200 rounded p-4 mb-4 shadow-sm">
           <h3 className="font-bold mb-2">Preview</h3>
 
           {mood && <div className="text-2xl mb-2">{mood.emoji} <span className="text-sm">({mood.label})</span></div>}
+          {text && <p className="italic text-xl text-gray-700 whitespace-pre-wrap mb-2">{title}</p>}
           {text && <p className="italic text-gray-700 whitespace-pre-wrap mb-2">{text}</p>}
 
           {media.type === "image" && <img src={media.url} alt="Moment" className="rounded max-h-64" />}
@@ -215,7 +247,7 @@ const CreateMomentForm = () => {
           </div>
         ) : (
           <button
-            disabled={!text || !mood || !media.file}
+            disabled={!title || !text || !mood || !media.file}
             onClick={handleSubmit}
             className="w-full py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 disabled:opacity-50"
           >
