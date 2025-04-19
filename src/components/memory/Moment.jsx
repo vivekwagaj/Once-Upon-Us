@@ -41,7 +41,7 @@ const Moment = ({ imageUrl, videoUrl, text, title, date, audioUrl }) => {
       className="min-h-screen bg-center bg-no-repeat bg-cover p-6 flex justify-center items-center"
       style={{
         backgroundImage: "url('/book-parchment-bg.jpg')",
-        backgroundSize: "cover",
+        backgroundSize: "fit",
       }}
     >
 
@@ -56,18 +56,18 @@ const Moment = ({ imageUrl, videoUrl, text, title, date, audioUrl }) => {
                       </p>
         {/* Media Container with Frame */}
         <div className="relative w-full max-h-[500px] mb-6 border-4 border-[#3e2c1e] rounded-lg shadow-md overflow-hidden">
-          {imageUrl && (
+          {imageUrl?.type?.startsWith("image") && (
             <img
-              src={imageUrl}
+              src={imageUrl.url}
               alt="Memory"
               className="w-full h-full object-cover"
             />
           )}
-          {videoUrl && (
+          {videoUrl?.type?.startsWith("video") && (
             <video
               controls
               className="w-full h-full object-cover"
-              src={videoUrl}
+              src={videoUrl.url}
             />
           )}
 

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 function Memories() {
   const { id } = useParams();
   const { moments } = useMoments();
-  const selectedMoment = moments.find(moment => moment.id === parseInt(id));
+  const selectedMoment = moments.find(moment => moment.id === id);
 
   if (!selectedMoment) {
     return (
@@ -16,17 +16,17 @@ function Memories() {
       </div>
     );
   }
+    console.log(selectedMoment);
 
   return (
     <div className="p-6 flex justify-center">
-    console.log(selectedMoment);
       <Moment
         title={selectedMoment.title}
         date={selectedMoment.date}
         text={selectedMoment.text}
         imageUrl={selectedMoment.media}
-        audioUrl={selectedMoment.voiceover}
-        videoUrl={selectedMoment.videoUrl}
+        audioUrl={selectedMoment.audio?.url}
+        videoUrl={selectedMoment.media}
       />
     </div>
   );
