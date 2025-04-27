@@ -14,7 +14,7 @@ export default function Signup() {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/home");
+      navigate("/welcome");
     } catch (err) {
       alert(err.message);
     }

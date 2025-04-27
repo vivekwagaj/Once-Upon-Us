@@ -21,9 +21,11 @@ function Memories() {
   return (
     <div className="p-6 flex justify-center">
       <Moment
+        id={selectedMoment.id}
         title={selectedMoment.title}
         date={selectedMoment.date}
         text={selectedMoment.text}
+        fav={selectedMoment.isFavorite}
         imageUrl={selectedMoment.media}
         audioUrl={selectedMoment.audio?.url}
         videoUrl={selectedMoment.media}

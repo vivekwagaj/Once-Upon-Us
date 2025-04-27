@@ -8,6 +8,8 @@ import CreateMomentForm from "./pages/CreateMomentForm";
 import Memories from "./pages/Memories"
 import PrivateRoute from "./components/auth/PrivateRoute";
 import MemoryPath from "./pages/MemoryPathPage";
+import RandomGenerator from "./pages/RandomGenerator";
+import WelcomePage from "./pages/WelcomePage"
 
 function App() {
   return (
@@ -38,6 +40,15 @@ function App() {
             </PrivateRoute>
           }
        />
+       <Route
+           path="/surprise"
+           element={
+             <PrivateRoute>
+               <RandomGenerator />
+             </PrivateRoute>
+           }
+       />
+       <Route path="/welcome" element={<WelcomePage />} />
     </Routes>
 
   );

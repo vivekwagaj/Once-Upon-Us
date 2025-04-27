@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../config/uploadToCloudinary"; // Import the new utility
@@ -27,12 +27,63 @@ const CreateMomentForm = () => {
   const [audio, setAudio] = useState({ file: null, url: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { fetchUserMoments } = useMoments();
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordedAudio, setRecordedAudio] = useState(null);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const mediaRecorderRef = useRef(null);
+  const recordingIntervalRef = useRef(null);
 
     const navigate = useNavigate();
 
     const goBack = () => {
       navigate("/home");
     };
+
+    const startRecording = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        const chunks = [];
+
+        mediaRecorder.ondataavailable = (e) => {
+          chunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(chunks, { type: "audio/webm" });
+          setRecordedAudio(blob);
+          setAudio({
+            file: new File([blob], "recorded-audio.webm", { type: "audio/webm" }),
+            url: URL.createObjectURL(blob),
+          });
+        };
+
+        mediaRecorder.start();
+        setIsRecording(true);
+        setRecordingTime(0);
+
+        recordingIntervalRef.current = setInterval(() => {
+          setRecordingTime(prev => prev + 1);
+        }, 1000);
+
+      } catch (err) {
+        console.error("Error accessing microphone:", err);
+        alert("Microphone access is required to record audio.");
+      }
+    };
+
+    const stopRecording = () => {
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.stop();
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+        setIsRecording(false);
+        clearInterval(recordingIntervalRef.current);
+      }
+    };
+
 
 
   const handleMediaChange = (e) => {
@@ -69,7 +120,7 @@ const CreateMomentForm = () => {
     });
   };
 
-  const { fetchUserMoments } = useMoments();
+
 
 
   const handleSubmit = async (e) => {
@@ -96,6 +147,7 @@ const CreateMomentForm = () => {
         date,
         text,
         title,
+        isFavorite,
         mood,
         media: mediaUrl
           ? {
@@ -192,6 +244,18 @@ const CreateMomentForm = () => {
         onChange={(e) => setText(e.target.value)}
       />
 
+
+      <button
+        type="button"
+        onClick={() => setIsFavorite((prev) => !prev)}
+        className="text-sm transition-transform text-yellow-800 transform  mb-4"
+        title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+      >
+        {isFavorite ? "💖 Marked" : "🤍 Mark"}  As Favourite
+      </button>
+
+
+
       {/* File Upload */}
       <label className="block mb-2">Photo or Video</label>
       <input
@@ -202,13 +266,39 @@ const CreateMomentForm = () => {
       />
 
       {/* Audio */}
-      <label className="block mb-2">Optional Audio</label>
-      <input
-        type="file"
-        accept="audio/*"
-        className="mb-4"
-        onChange={handleAudioChange}
-      />
+      {/* Audio Section */}
+      <label className="block mb-2">Optional Audio (Record your voice!)</label>
+
+      <div className="flex items-center gap-4 mb-4">
+        {!isRecording ? (
+          <button
+            type="button"
+            onClick={startRecording}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            🎙️ Start Recording
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={stopRecording}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            ⏹️ Stop Recording
+          </button>
+        )}
+        {isRecording && <span className="text-gray-600">{recordingTime}s</span>}
+      </div>
+      {/* Audio Preview */}
+      {audio.url && (
+        <div className="mb-4">
+          <audio controls src={audio.url} className="w-full"></audio>
+        </div>
+      )}
+
+
+
+
 
       {/* Live Preview */}
       {(title || media.url || audio.url || mood || text) && (
