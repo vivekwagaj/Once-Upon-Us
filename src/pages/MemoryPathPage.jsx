@@ -211,7 +211,7 @@ export default function MemoryPath() {
 
                             {moments[i].media?.type?.startsWith("video") && (
                             <video
-                              autoPlay
+                              autoPlay muted
                               className="w-10 h-10 object-cover rounded"
                             >
                               <source src={moments[i].media.url} type={moments[i].media.type} />
