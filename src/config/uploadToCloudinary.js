@@ -5,7 +5,7 @@ export const uploadToCloudinary = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', 'moment_upload'); // Replace with your Cloudinary upload preset
-  formData.append('api_key', cloudinaryConfig.apiKey);
+
 
   try {
     // Using axios to send the POST request to Cloudinary's API
